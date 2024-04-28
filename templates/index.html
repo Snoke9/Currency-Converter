@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Currency Converter</h2>
+    <form id="currency-form">
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" step="0.0001" min="0.0001" required>
+        </div>
+        <div class="form-group">
+            <label for="from">From:</label>
+            <select id="from" name="from" required>
+                <option value="amd">AMD Армянский драм</option>
+                <option value="byn">BYN Белорусский рубль</option>
+                <option value="aed">AED Дирхам ОАЭ</option>
+                <option value="usd">USD Доллар США</option>
+                <option value="eur">EUR Евро</option>
+                <option value="kzt">KZT Казахстанский тенге</option>
+                <option value="cny">CNY Китайский юань</option>
+                <option value="rub">RUB Российский рубль</option>
+                <option value="try">TRY Турецкая лира</option>
+                <option value="uah">UAH Украинская гривна</option>
+                <option value="gbp">GBP Фунт стерлингов</option>
+                <option value="jpy">JPY Японская иена</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="to">To:</label>
+            <select id="to" name="to" required>
+                <option value="amd">AMD Армянский драм</option>
+                <option value="byn">BYN Белорусский рубль</option>
+                <option value="aed">AED Дирхам ОАЭ</option>
+                <option value="usd">USD Доллар США</option>
+                <option value="eur">EUR Евро</option>
+                <option value="kzt">KZT Казахстанский тенге</option>
+                <option value="cny">CNY Китайский юань</option>
+                <option value="rub">RUB Российский рубль</option>
+                <option value="try">TRY Турецкая лира</option>
+                <option value="uah">UAH Украинская гривна</option>
+                <option value="gbp">GBP Фунт стерлингов</option>
+                <option value="jpy">JPY Японская иена</option>
+            </select>
+        </div>
+        <button type="submit">Convert</button>
+    </form>
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    const form = document.getElementById('currency-form');
+    const resultDiv = document.getElementById('result');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        const amount = formData.get('amount');
+        const fromCurrency = formData.get('from');
+        const toCurrency = formData.get('to');
+
+        var myHeaders = new Headers();
+        myHeaders.append("apikey", "4VtAkMG76ToTKIglU76mvxrK388xfHhG");
+
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow',
+            headers: myHeaders
+        };
+
+        fetch(`https://api.apilayer.com/exchangerates_data/convert?to=${toCurrency}&from=${fromCurrency}&amount=${amount}`, requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                const res = data.result;
+                const result = `${amount} ${fromCurrency.toUpperCase()} = ${res} ${toCurrency.toUpperCase()}`;
+                resultDiv.textContent = result;
+            })
+            .catch(error => console.log('error', error));
+    });
+</script>
+
+</body>
+</html>
