@@ -20,7 +20,8 @@ body {
 h2 {
     text-align: center;
     color: #333;
-    font-size: 30px;
+    font-size: 70px;
+    margin-top: -10px;
 }
 
 form {
