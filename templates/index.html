@@ -11,7 +11,7 @@
 
 <div class="container">
     <h2>Currency Converter</h2>
-    <form id="currency-form">
+    <form id="currency-form" action="/" method="POST">
         <div class="form-group">
             <label for="amount">Amount:</label>
             <input type="number" id="amount" name="amount" step="0.0001" min="0.0001" required>
@@ -52,40 +52,11 @@
         </div>
         <button type="submit">Convert</button>
     </form>
-    <div class="result" id="result"></div>
+    <div class="result" id="result">
+        {{ result }}
+    </div>
 </div>
 
-<script>
-    const form = document.getElementById('currency-form');
-    const resultDiv = document.getElementById('result');
-
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const formData = new FormData(this);
-        const amount = formData.get('amount');
-        const fromCurrency = formData.get('from');
-        const toCurrency = formData.get('to');
-
-        var myHeaders = new Headers();
-        myHeaders.append("apikey", "4VtAkMG76ToTKIglU76mvxrK388xfHhG");
-
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow',
-            headers: myHeaders
-        };
-
-        fetch(`https://api.apilayer.com/exchangerates_data/convert?to=${toCurrency}&from=${fromCurrency}&amount=${amount}`, requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                const res = data.result;
-                const result = `${amount} ${fromCurrency.toUpperCase()} = ${res} ${toCurrency.toUpperCase()}`;
-                resultDiv.textContent = result;
-            })
-            .catch(error => console.log('error', error));
-    });
-</script>
-
 </body>
+
 </html>
